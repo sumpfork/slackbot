@@ -77,19 +77,6 @@ class MessageDispatcher(object):
         if subtype == u'message_changed':
             return
 
-        botname = self._get_bot_name()
-        try:
-            msguser = self._client.users.get(msg['user'])
-            username = msguser['name']
-        except (KeyError, TypeError):
-            if 'username' in msg:
-                username = msg['username']
-            else:
-                return
-
-        if username == botname or username == u'slackbot':
-            return
-
         msg_respond_to = self.filter_text(msg)
         if msg_respond_to:
             self._pool.add_task(('respond_to', msg_respond_to))
